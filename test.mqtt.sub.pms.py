@@ -1,7 +1,7 @@
 from mqtt_manage import MqttManage
 
 MAP = {"test_data": [("data", "H")]}
-DEVICE_COUNT = 10
+DEVICE_COUNT = 3
 
 def device_interface():
     interface = []
@@ -11,7 +11,7 @@ def device_interface():
 
 if __name__ == '__main__':
     interface = device_interface()
-    mqttmanage = MqttManage("helios/cx/device", interface)
+    mqttmanage = MqttManage("helios/1/PcsCommandInfo", interface)
 
     mqttmanage.loop()
 

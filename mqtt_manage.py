@@ -13,11 +13,11 @@ UNPACK_PARAMS = {
 # noinspection PyBroadException,PyUnusedLocal
 class MqttManage:
     CONFIG = {
-        "ip": "192.168.0.128",
+        "ip": "localhost",
         "port": 1883,
         "keepalive": 60,
-        "username": "user",
-        "password": "1234"
+        "username": "",
+        "password": ""
     }
 
     def __init__(self, channel, interface):
