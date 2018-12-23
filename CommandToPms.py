@@ -1,0 +1,63 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QDialog, QMainWindow
+ 
+from Main_Dialog import Ui_MainWindow
+from mqtt_manager import MqttManager
+ 
+class MainDialog(QMainWindow, Ui_MainWindow):
+    def __init__(self):
+        super(MainDialog, self).__init__()
+        self.setupUi(self)
+
+        self.site_id = 'None'
+
+        self.btn_restart_pms.clicked.connect(self.on_pms_restart)
+        self.btn_connect_vpn.clicked.connect(self.on_connect_vpn)
+        self.btn_disconnect_vpn.clicked.connect(self.on_disconnect_vpn)
+        self.input_site_id.textChanged.connect(self.set_site_id)
+
+    def set_site_id(self):
+        self.site_id = self.input_site_id.toPlainText()
+
+    def on_pms_restart(self):
+        self.mqtt_write_to_pms(1)
+        QMessageBox.about(self, "pms", "Site : " + self.site_id + " -> Restart")
+conda install -c lucaszw paho-mqtt 
+    def on_connect_vpn(self):
+        self.mqtt_write_to_pms(2)
+        QMessageBox.about(self, "vpn", "Site : " + self.site_id + " -> Connect")
+
+    def on_disconnect_vpn(self):
+        self.mqtt_write_to_pms(3)
+        QMessageBox.about(self, "vpn", "Site : " + self.site_id + " -> Disconnect")
+
+    def mqtt_write_to_pms(self, operation):
+        data1 = 0
+        data2 = 0
+        data3 = 1
+
+        if operation == 1:
+            data1 = 1
+        elif operation == 2:
+            data1 = 2
+        elif operation == 3:
+            data1 = 3
+        else:
+            data1 = 0
+            data2 = 0
+            data3 = 0
+
+        data1 = data1.to_bytes(2, byteorder='little', signed=True)
+        data2 = data2.to_bytes(2, byteorder='little', signed=True)
+        data3 = data3.to_bytes(2, byteorder='little', signed=True)
+
+        params = data1 + data2 + data3
+        MqttManger.write("helios/" + self.site_id + "/PmsCommand", params)
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    ui = MainDialog()
+    ui.show()
+    sys.exit(app.exec_())

@@ -11,7 +11,7 @@ def device_interface():
 
 if __name__ == '__main__':
     interface = device_interface()
-    mqttmanage = MqttManage("helios/1/PcsCommandInfo", interface)
+    mqttmanage = MqttManage("helios/1/PmsCommand", interface)
 
     mqttmanage.loop()
 

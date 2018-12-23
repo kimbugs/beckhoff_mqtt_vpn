@@ -1,4 +1,4 @@
 {
-    "python.pythonPath": "venv/bin/python",
+    "python.pythonPath": "/Users/kimbugs/anaconda3/envs/venvMqtt/bin/python",
     "python.linting.pylintEnabled": false
 }
