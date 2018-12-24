@@ -12,7 +12,7 @@ class MqttManager:
     @classmethod
     def write(cls, key, value):
         m = mqtt.Client("python_pub")
-
+        m.username_pw_set(username=cls.CONFIG['username'], password=cls.CONFIG['password'])
         m.connect(cls.CONFIG['ip'], cls.CONFIG['port'])
 
         m.publish(key, value)
