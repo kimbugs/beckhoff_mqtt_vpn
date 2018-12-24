@@ -11,8 +11,8 @@ class MqttManager:
 
     @classmethod
     def write(cls, key, value):
-        m = mqtt.Clinet("python_pub")
+        m = mqtt.Client("python_pub")
 
         m.connect(cls.CONFIG['ip'], cls.CONFIG['port'])
 
-        m.publish(key, vlaue)
+        m.publish(key, value)

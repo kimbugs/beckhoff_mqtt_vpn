@@ -24,7 +24,7 @@ class MainDialog(QMainWindow, Ui_MainWindow):
     def on_pms_restart(self):
         self.mqtt_write_to_pms(1)
         QMessageBox.about(self, "pms", "Site : " + self.site_id + " -> Restart")
-conda install -c lucaszw paho-mqtt 
+
     def on_connect_vpn(self):
         self.mqtt_write_to_pms(2)
         QMessageBox.about(self, "vpn", "Site : " + self.site_id + " -> Connect")
@@ -54,7 +54,7 @@ conda install -c lucaszw paho-mqtt
         data3 = data3.to_bytes(2, byteorder='little', signed=True)
 
         params = data1 + data2 + data3
-        MqttManger.write("helios/" + self.site_id + "/PmsCommand", params)
+        MqttManager.write("helios/" + self.site_id + "/PmsCommand", params)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
