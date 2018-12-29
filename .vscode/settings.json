@@ -1,4 +1,8 @@
 {
     "python.pythonPath": "/Users/kimbugs/.pyenv/versions/venvQtMqtt/bin/python",
-    "python.linting.pylintEnabled": false
+    "python.linting.pylintEnabled": false,
+    "python.unitTest.unittestEnabled": true,
+    "python.unitTest.pyTestEnabled": false,
+    "python.unitTest.nosetestsEnabled": false,
+    "python.unitTest.unittestArgs": ["-v", "-s", ".", "-p", "_test*.py"],
 }

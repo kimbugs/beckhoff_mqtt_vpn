@@ -15,4 +15,10 @@ class MqttManager:
         m.username_pw_set(username=cls.CONFIG['username'], password=cls.CONFIG['password'])
         m.connect(cls.CONFIG['ip'], cls.CONFIG['port'])
 
-        m.publish(key, value)
+        result = m.publish(key, value)
+
+        if result[0] == 0:
+            return True
+        else:
+            return False
+        
