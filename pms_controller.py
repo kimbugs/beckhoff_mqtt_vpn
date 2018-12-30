@@ -1,4 +1,5 @@
 from mqtt_manager import MqttManager
+import platform
 
 VPN_IPs = ['10.100.0.1', '10.100.10.11', '10.100.10.12', '10.100.10.13', '10.100.10.14',
             '10.100.10.15', '10.100.10.16', '10.100.10.17', '10.100.10.18', '10.100.10.19']
@@ -12,28 +13,14 @@ class PmsController(object):
 
     def set_site_id(self, site_id):
         self.site_id = site_id
-
-    def check_vpn_id(self, vpn_index):
-        result_msg = "NONE"
-        if vpn_index == 0:
-            result_msg = "Select VPN ID"
-        else:
-            # check ping
-            result = self.check_ping(VPN_IPs[vpn_index])
-            if result:
-                result_msg = "HeliosVpn" + str(vpn_index) + " is used, select another id"
-            else:
-                result_msg = "HeliosVpn" + str(vpn_index) + " is available"
-            
-        return result_msg
             
     def on_pms_restart(self):
         result = self.mqtt_write_to_pms(1, 0)
         
         if result:
-            return "Site : " + self.site_id + " -> Restart"
+            return True
         else:
-            return "Site : " + self.site_id + " -> Fail"
+            return False
         
     def on_connect_vpn(self, vpn_index):
         vpn_index = vpn_index
@@ -48,17 +35,17 @@ class PmsController(object):
         result = self.mqtt_write_to_pms(3, 0)
 
         if result:
-            return "Site : " + self.site_id + " -> Disconnect"
+            return True
         else:
-            return "Site : " + self.site_id + " -> Fail"
+            return False
         
     def on_add_route_pms(self):
         result = self.mqtt_write_to_pms(4, 0)
         
         if result:
-            return "Site : " + self.site_id + " -> Added Route"
+            return True
         else:
-            return "Site : " + self.site_id + " -> Fail"
+            return False
         
     def mqtt_write_to_pms(self, operation, referenceValue):
         data1 = 0
@@ -91,9 +78,18 @@ class PmsController(object):
         else:
             return False
 
+    @classmethod
     def check_ping(self, host_ip):
         hostname = host_ip
-        sub_p = subprocess.Popen(["ping", "-W", "500", "-c", "1", hostname], stdout=subprocess.PIPE)
+        
+        if platform.system().lower() == 'windows':
+            time_command = '-w'
+            count_command = '-n'
+        else:
+            time_command = '-W'
+            count_command = '-c'  
+
+        sub_p = subprocess.Popen(["ping", time_command, "500", count_command, "1", hostname], stdout=subprocess.PIPE)
         sub_p.wait()
         response = sub_p.poll()
         # and then check the response...

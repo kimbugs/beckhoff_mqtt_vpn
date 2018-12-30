@@ -10,13 +10,13 @@ class Test_Main(unittest.TestCase):
     def test_pms_controller(self):
         pms = PmsController()
 
-        pms.check_vpn_id('10000')
+        pms.set_site_id('10000')
         
         # pms func test
-        self.assertIn("Site",pms.on_pms_restart())
-        self.assertIn("Site",pms.on_connect_vpn(1))
-        self.assertIn("Site",pms.on_disconnect_vpn())
-        self.assertIn("Site",pms.on_add_route_pms())
+        self.assertIs(pms.on_pms_restart(), True)
+        self.assertIs(pms.on_connect_vpn(1), True)
+        self.assertIs(pms.on_disconnect_vpn(), True)
+        self.assertIs(pms.on_add_route_pms(), True)
 
         # ip ping test
         self.assertIs(pms.check_ping('localhost'), True)
